@@ -477,3 +477,55 @@ table{width:100%;min-width:560px}
   .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
+.login-layout{
+  box-sizing:border-box;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:hidden;
+}
+.login-hero,.login-panel,.login-card{
+  box-sizing:border-box;
+  min-width:0;
+  max-width:100%;
+}
+.login-hero,.login-title,.login-description,#publicCatalog,#catalogContent{
+  overflow-wrap:break-word;
+  word-break:normal;
+}
+.login-title{
+  font-size:clamp(1.5rem,2.4vw,1.75rem);
+  line-height:1.2;
+}
+.login-description{margin:6px 0 22px}
+.login-submit{
+  display:block;
+  width:100%;
+  min-height:44px;
+  padding:13px;
+}
+
+@media(max-width:768px){
+  #login.login-layout{grid-template-columns:minmax(0,1fr)}
+  .login-hero{
+    width:100%;
+    min-height:0;
+    padding:clamp(22px,6vw,40px) clamp(20px,5vw,40px);
+    gap:24px;
+  }
+  .login-hero h1{
+    max-width:100%;
+    font-size:clamp(2rem,7vw,3.5rem);
+    overflow-wrap:break-word;
+    word-break:normal;
+  }
+  .login-panel{width:100%;padding:clamp(16px,5vw,32px)}
+  .login-card{
+    width:100%;
+    max-width:540px;
+    padding:clamp(22px,6vw,36px);
+  }
+  .login-title{font-size:clamp(1.45rem,6vw,1.75rem)}
+  .login-card input{width:100%;max-width:100%;min-width:0}
+}
+

@@ -2,18 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#073F2B">
   <title>Portafolio Digital SENA</title>
   <link rel="stylesheet" href="/styles.css">
   <script src="/app.js" defer></script>
 </head>
 <body>
-  <div id="login">
-    <section class="art">
+  <div id="login" class="login-layout">
+    <section class="art login-hero" aria-labelledby="loginHeroTitle">
       <div class="brand"><div class="logo">S</div><div>PORTAFOLIO DIGITAL<br><span class="sm mut">SENA · Formación integral</span></div></div>
       <div>
-        <h1>Tu formación,<br>en un solo lugar.</h1>
+        <h1 id="loginHeroTitle">Tu formación,<br>en un solo lugar.</h1>
         <p>Acompaña, gestiona y fortalece cada etapa del proceso de formación profesional.</p>
         <div class="value-grid">
           <div><span class="value-icon">01</span><strong>Seguimiento</strong><small>Acompaña cada etapa formativa.</small></div>
@@ -23,14 +23,14 @@
       </div>
       <div class="sm mut">Servicio Nacional de Aprendizaje · SENA</div>
     </section>
-    <section class="side">
-      <div class="lcard">
-        <h2 style="font-size:28px">Bienvenido de nuevo</h2>
-        <p class="mut" style="margin:6px 0 22px">Ingresa con tu número de documento y contraseña.</p>
+    <section class="side login-panel" aria-labelledby="loginTitle">
+      <div class="lcard login-card">
+        <h2 id="loginTitle" class="login-title">Bienvenido de nuevo</h2>
+        <p class="mut login-description">Ingresa con tu número de documento y contraseña.</p>
         <form id="loginForm" autocomplete="on">
           <div class="field"><label for="doc">Número de documento</label><input id="doc" name="document" inputmode="numeric" autocomplete="username" required></div>
           <div class="field"><label for="pass">Contraseña</label><input id="pass" name="password" type="password" autocomplete="current-password" required></div>
-          <button class="btn full" style="width:100%;padding:13px" type="submit">Iniciar sesión</button>
+          <button class="btn full login-submit" type="submit">Iniciar sesión</button>
           <div class="err" id="loginErr" role="alert"></div>
         </form>
         <p class="sm mut">¿Olvidaste tu contraseña? Solicita ayuda al administrador del sistema.</p>
