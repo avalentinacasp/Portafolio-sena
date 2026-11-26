@@ -1,0 +1,73 @@
+PORTAFOLIO DIGITAL SENA
+=======================
+
+EJECUCIÓN
+---------
+Requiere Node.js 24.10 o posterior.
+
+  npm run build
+  npm run db:migrate
+  npm start
+
+Express sirve el sitio en la raíz y la API bajo /api. Publica el servidor Node
+completo en el hosting; no alojes el HTML por separado en un hosting estático.
+El catálogo público se carga sin sesión. Las demás vistas exigen una sesión
+servidor-servidor con cookie HttpOnly.
+
+BASE DE DATOS Y CUENTAS
+-----------------------
+La migración 001 crea el catálogo público. La migración 002 define el esquema
+privado, además de sesiones seguras, control de intentos y almacenamiento de
+evidencias.
+
+No se importan cuentas, hashes SHA-256 ni registros personales de demostración.
+Las contraseñas nuevas se almacenan con scrypt; las sesiones se guardan en la
+base de datos como hashes de tokens aleatorios. El primer
+administrador se crea una sola vez desde un entorno seguro:
+
+  BOOTSTRAP_ADMIN_DOCUMENT=...
+  BOOTSTRAP_ADMIN_NAME=...
+  BOOTSTRAP_ADMIN_EMAIL=...
+  BOOTSTRAP_ADMIN_PASSWORD=...
+  npm run db:create-admin
+
+Configura esas variables localmente o como secretos temporales del hosting. No
+las escribas en el código ni en el repositorio. Después de crear la cuenta,
+elimínalas del entorno. El administrador puede crear cuentas de instructor y
+coordinador; el instructor puede crear cuentas de aprendiz. No se crean claves
+temporales conocidas ni se importan las contraseñas del prototipo.
+
+Los usuarios pueden cambiar su contraseña autenticándose. Un administrador
+puede restablecer las contraseñas de las cuentas. No hay envío de correo ni
+recuperación automática por email configurados.
+
+Las evidencias se cargan mediante la API privada y se almacenan en PostgreSQL,
+con límite de 10 MB por archivo. El acceso a los archivos comprueba la sesión y
+el rol/perfil antes de permitir su descarga.
+
+VARIABLES DEL HOSTING
+---------------------
+Obligatorias para el servidor:
+  DATABASE_URL             URL pooled de Neon para consultas de la aplicación.
+  DATABASE_URL_UNPOOLED    URL directa de Neon; úsala en el comando de migración.
+
+Opcionales:
+  PORT                     Lo define normalmente el proveedor de hosting.
+  FRONTEND_ORIGINS         Orígenes HTTPS exactos, separados por comas. Déjalo
+                           vacío si Express sirve frontend y API en el mismo
+                           dominio (configuración recomendada).
+
+DESPLIEGUE
+----------
+1. Añade DATABASE_URL y DATABASE_URL_UNPOOLED como secretos del servicio Node.
+2. Usa `npm ci` para instalar y `npm run build` como comprobación de compilación.
+3. Ejecuta `npm run db:migrate` como paso de release/deploy.
+4. Usa `npm start` como comando de arranque.
+5. Crea la cuenta inicial con `npm run db:create-admin` una sola vez y elimina
+   sus cuatro variables BOOTSTRAP_ADMIN_* del entorno.
+6. Abre la URL HTTPS del servicio y crea sedes, programas, fichas, instructores
+   y competencias antes de registrar aprendices y publicar actividades.
+
+Los datos históricos de base_de_datos/ se excluyen del repositorio público y no
+se sirven como contenido estático. No habilites un servidor estático con la raíz
+del proyecto.

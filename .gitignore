@@ -1,0 +1,11 @@
+.neon
+node_modules/
+.env
+.env.*
+!.env.example
+base_de_datos/
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx

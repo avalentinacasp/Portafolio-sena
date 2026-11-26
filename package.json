@@ -1,0 +1,20 @@
+{
+  "engines": {
+    "node": ">=24.10.0"
+  },
+  "scripts": {
+    "build": "node --check server/index.js && node --check server/db.js && node --check server/private.js && node --check scripts/check-db.js && node --check scripts/migrate.js && node --check scripts/create-admin.js && node --check app.js",
+    "start": "node --env-file-if-exists=.env --env-file-if-exists=.env.local server/index.js",
+    "db:check": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/check-db.js",
+    "db:migrate": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/migrate.js",
+    "db:create-admin": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/create-admin.js"
+  },
+  "dependencies": {
+    "@neon/config": "^1.14.8",
+    "@neon/env": "^2.1.11",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3"
+  }
+}
