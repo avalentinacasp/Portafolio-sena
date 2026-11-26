@@ -29,7 +29,29 @@
         <p class="mut login-description">Ingresa con tu número de documento y contraseña.</p>
         <form id="loginForm" autocomplete="on">
           <div class="field"><label for="doc">Número de documento</label><input id="doc" name="document" inputmode="numeric" autocomplete="username" required></div>
-          <div class="field"><label for="pass">Contraseña</label><input id="pass" name="password" type="password" autocomplete="current-password" required></div>
+          <div class="field">
+            <label for="pass">Contraseña</label>
+            <div class="password-control">
+              <input id="pass" name="password" type="password" autocomplete="current-password" required>
+              <button
+                id="togglePassword"
+                class="password-toggle"
+                type="button"
+                aria-label="Mostrar contraseña"
+                aria-pressed="false"
+                aria-controls="pass"
+              >
+                <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+                  <path d="m3 3 18 18"></path>
+                  <path d="M10.6 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a14.6 14.6 0 0 1-3.3 4.2M6.6 6.6C3.7 8.3 2 12 2 12s3.6 7 10 7c1.5 0 2.8-.4 3.9-1"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
           <button class="btn full login-submit" type="submit">Iniciar sesión</button>
           <div class="err" id="loginErr" role="alert"></div>
         </form>
@@ -45,6 +67,14 @@
   <div id="app" class="hidden">
     <header class="top">
       <div class="brand"><div class="logo">S</div><span class="sm">PORTAFOLIO DIGITAL SENA</span></div>
+      <button
+        class="btn out xs menu"
+        id="umenu"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-controls="nav"
+        aria-expanded="false"
+      >☰</button>
       <div class="who">
         <button class="btn out xs" id="changePassword">Cambiar contraseña</button>
         <div class="nm"><strong id="uname" class="sm"></strong><div class="sm mut" id="urole"></div></div>

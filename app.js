@@ -11,7 +11,7 @@ const roles = {
 const navItems = {
   aprendiz: [["inicio", "Resumen"], ["ruta", "Mi ruta formativa"], ["evid", "Evidencias"], ["notas", "Mis notas"], ["rec", "Recursos"], ["avisos", "Notificaciones"]],
   instructor: [["inicio", "Resumen"], ["fichas", "Mis fichas"], ["comp", "Actividades"], ["eval", "Evaluar evidencias"], ["riesgo", "Riesgos"], ["docente", "Portafolio docente"]],
-  administrador: [["inicio", "Resumen"], ["sedes", "Sedes"], ["prog", "Programas"], ["fichas", "Fichas y competencias"], ["usuarios", "Cuentas e instructores"]],
+  administrador: [["inicio", "Panel de administración"], ["sedes", "Sedes"], ["prog", "Programas"], ["fichas", "Fichas y competencias"], ["usuarios", "Cuentas e instructores"]],
   coordinador: [["inicio", "Resumen"], ["sedes", "Sedes activas"], ["instr", "Instructores"], ["audit", "Auditoría docente"]],
 };
 const stateKeys = ["sites", "programs", "instructors", "fichas", "comps", "learners", "tareas", "entregas", "notes", "notifs", "risks", "obs", "materials", "users"];
@@ -178,7 +178,18 @@ function instructorView() {
   return homeView();
 }
 
+function adminDashboardView() {
+  return heading("Panel de administración", "Gestiona la oferta formativa, las fichas y las cuentas del sistema.") +
+    `<div class="grid g2 admin-shortcuts">
+      <article class="card"><h3>Sedes</h3><p class="mut">Administra los centros de formación.</p>${button("Administrar sedes", 'data-view="sedes"', "gold")}</article>
+      <article class="card"><h3>Programas</h3><p class="mut">Organiza la oferta académica por sede.</p>${button("Administrar programas", 'data-view="prog"', "gold")}</article>
+      <article class="card"><h3>Fichas y competencias</h3><p class="mut">Configura grupos, programas y competencias.</p>${button("Administrar fichas", 'data-view="fichas"', "gold")}</article>
+      <article class="card"><h3>Cuentas e instructores</h3><p class="mut">Crea y administra las cuentas del sistema.</p>${button("Administrar cuentas", 'data-view="usuarios"', "gold")}</article>
+    </div>`;
+}
+
 function adminView() {
+  if (activeView === "inicio") return adminDashboardView();
   if (activeView === "sedes") {
     return heading("Sedes", "Administra los centros de formación.", button("＋ Nueva sede", 'data-form="site"', "gold")) +
       `<div class="grid g2">${state.sites.map((site) => `<article class="card"><h3>${esc(site.name)}</h3><p>${esc(site.city)} · ${esc(site.address)}</p><p>${badge(site.active ? "Activa" : "Inactiva")}</p>${button("Editar", `data-edit="sites:${esc(site.id)}"`)} ${button(site.active ? "Desactivar" : "Activar", `data-toggle="${esc(site.id)}"`)} ${button("Eliminar", `data-delete="sites:${esc(site.id)}"`, "bad")}</article>`).join("") || '<div class="empty">Crea la primera sede.</div>'}</div>`;
@@ -216,7 +227,7 @@ function adminView() {
         button("Eliminar", `data-delete="instructors:${esc(item.id)}"`, "bad"),
       ]));
   }
-  return homeView();
+  return adminDashboardView();
 }
 
 function coordinatorView() {
@@ -241,11 +252,18 @@ function coordinatorView() {
 function render() {
   if (!user) return;
   const items = navItems[user.role] || [];
-  $("nav").innerHTML = items.map(([id, label]) => `<button type="button" class="${activeView === id ? "on" : ""}" data-view="${id}">${esc(label)}</button>`).join("");
+  $("nav").innerHTML = items.map(([id, label]) => `<button type="button" class="${activeView === id ? "on" : ""}" data-view="${id}">${esc(label)}</button>`).join("") +
+    '<button type="button" class="mobile-action" data-action="change-password">Cambiar contraseña</button>';
   const renderer = user.role === "aprendiz" ? learnerView : user.role === "instructor" ? instructorView : user.role === "administrador" ? adminView : coordinatorView;
   $("view").innerHTML = renderer();
   $("uname").textContent = user.name;
   $("urole").textContent = roles[user.role] || user.role;
+}
+
+function closeMobileNav() {
+  $("nav").classList.remove("open");
+  $("umenu").setAttribute("aria-expanded", "false");
+  $("umenu").setAttribute("aria-label", "Abrir menú de navegación");
 }
 
 async function refreshState() {
@@ -445,6 +463,12 @@ async function downloadEvidence(deliveryId) {
   URL.revokeObjectURL(link.href);
 }
 
+$("umenu").addEventListener("click", () => {
+  const isOpen = $("nav").classList.toggle("open");
+  $("umenu").setAttribute("aria-expanded", String(isOpen));
+  $("umenu").setAttribute("aria-label", isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación");
+});
+
 document.addEventListener("click", async (event) => {
   const target = event.target.closest("button");
   if (!target) return;
@@ -456,6 +480,10 @@ document.addEventListener("click", async (event) => {
         await refreshState();
       }
       render();
+      closeMobileNav();
+    } else if (target.dataset.action === "change-password") {
+      closeMobileNav();
+      $("changePassword").click();
     } else if (target.dataset.form) {
       openForm(target.dataset.form);
     } else if (target.dataset.edit) {
@@ -524,6 +552,17 @@ $("loginForm").addEventListener("submit", async (event) => {
   } catch (error) {
     $("loginErr").textContent = error.message;
   }
+});
+
+const passwordInput = $("pass");
+const passwordToggle = $("togglePassword");
+passwordToggle.addEventListener("click", () => {
+  const isVisible = passwordInput.type === "text";
+  passwordInput.type = isVisible ? "password" : "text";
+  passwordToggle.setAttribute("aria-label", isVisible ? "Mostrar contraseña" : "Ocultar contraseña");
+  passwordToggle.setAttribute("aria-pressed", String(!isVisible));
+  passwordToggle.querySelector(".eye-open").hidden = !isVisible;
+  passwordToggle.querySelector(".eye-closed").hidden = isVisible;
 });
 
 $("logout").addEventListener("click", async () => {
