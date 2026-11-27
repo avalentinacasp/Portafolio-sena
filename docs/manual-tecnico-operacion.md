@@ -24,7 +24,7 @@ Navegador
 | `server/private.js` | Autenticación, sesiones, autorización por rol, consultas y operaciones privadas. |
 | `server/db.js` | Pool `pg` y validación de URLs PostgreSQL. |
 | `migrations/` | Esquemas SQL versionados: catálogo público y portafolio privado. |
-| `scripts/` | Comprobación de conexión, migración y creación única del administrador. |
+| `scripts/` | Comprobación de conexión, migración, alta inicial del administrador y carga controlada de solo lectura. |
 | `base_de_datos/` | Datos/esquema históricos; ignorados por Git y no servidos por Express. No son seeds del despliegue. |
 
 > **CAPTURA T-01 — PENDIENTE**
@@ -157,6 +157,45 @@ sin mostrar URLs, servicio saludable y catálogo público.
   comportamiento esperado antes de afirmar que el catálogo refleja altas del
   panel.
 
+### 6.1 Reglas de validación y estados iniciales observados
+
+- Alta de usuarios: documento de 6–12 dígitos; nombre máximo 150; correo con
+  formato básico; contraseña de 10–128 caracteres con hash scrypt.
+- Acceso: cinco contraseñas incorrectas bloquean 15 minutos; el limitador por
+  IP rechaza intentos excesivos con 429; sesión de 12 horas.
+- Instructor: necesita sede activa; la API vuelve a validar que exista y esté
+  activa. Instructor solo crea aprendices y actividades en fichas/competencias
+  asignadas.
+- Evidencia: hasta 10 MB y extensiones permitidas (PDF, Office, ZIP/RAR, PNG,
+  JPG/JPEG, TXT); nota entre 0 y 5. Riesgo: Bajo/Medio/Alto. Material: tipos y
+  visibilidad limitados a opciones enumeradas por la aplicación.
+- Esquema: sedes nuevas activas por defecto; notificaciones no leídas por
+  defecto; entregas solo pueden estar `Entregado` o `Calificado`. Las tareas
+  sin entrega se muestran como `Pendiente` o `Vencido` según fecha.
+- Mensajes de listas vacías del frontend (como “Sin registros todavía” o “No
+  hay programas publicados”) son estados condicionales cuando no hay filas; no
+  prueban que la base de datos real esté vacía.
+
+### 6.2 Arnés de rendimiento controlado
+
+`npm run test:load:readonly` ejecuta `scripts/stress-readonly.js`: GET a rutas
+fijas, oleadas de 5/15/30 y máximo 150 solicitudes por escenario. La base de
+datos usa pool de 5 conexiones. Corta ante cualquier 5xx, estado inesperado,
+timeout/error de conexión o p95 > 5 s; nunca ejecuta login ni operaciones de
+escritura. Solo admite loopback o staging HTTPS con host aprobado y confirmación
+explícita; producción está deshabilitada.
+
+Prueba local ejecutada el 26 de noviembre de 2026: `catalog`,
+`health-db` y `private-state-no-session`, una ronda por nivel, 50 solicitudes
+por escenario. Los tres completaron 5/15/30 sin cortes ni errores: catálogo y
+health DB devolvieron 200; el estado privado sin sesión devolvió 401, esperado.
+Promedio/p95/máximo por oleada están en [Plan de pruebas](./plan-de-pruebas.md).
+La evidencia visual T-08 sigue pendiente de captura real de consola. Esta
+muestra no valida roles autenticados ni representa rendimiento de producción.
+La salida numérica sin secretos está en
+[`docs/capturas/22-prueba-carga-readonly.json`](./capturas/22-prueba-carga-readonly.json);
+la captura real de consola aún debe añadirse.
+
 ## 7. Migraciones y modelo de datos
 
 ### 7.1 Diagrama ER simplificado
@@ -256,6 +295,13 @@ tienen relación FK entre sí.
 > resultados, solo si el propietario concede acceso.
 > Validar: no capturar pantalla de login como si fuera evidencia del contenido;
 > no ejecutar celdas que escriban en Neon sin autorización.
+
+> **CAPTURA T-08 — PENDIENTE DE AUTORIZACIÓN**
+> Archivo sugerido: `docs/capturas/22-prueba-carga-readonly.png`
+> Debe verse: escenario, niveles 5/15/30, promedio, p95, máximo, códigos HTTP
+> y errores de conexión/timeout.
+> Validar: origen local/staging autorizado; no mostrar tokens, cookies,
+> variables, respuestas privadas ni hostname de staging si es confidencial.
 
 El inventario completo está en [docs/capturas/README.md](./capturas/README.md).
 No fotografiar secretos, documentos, correos reales, URLs con credenciales ni

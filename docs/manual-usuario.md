@@ -46,6 +46,15 @@ oferta formativa pública no requiere cuenta; los paneles de gestión sí.
 > Validar: solo con un valor dummy no productivo; no enviarlo y ocultar/borrar
 > el valor antes de conservar la imagen.
 
+### Navegación en escritorio y móvil
+
+Desde 901 px, la aplicación muestra el menú de rol como barra lateral; hasta
+900 px se accede mediante el botón de menú móvil. La selección de un módulo
+cierra el menú. En móvil se conservan las mismas vistas y permisos; las tablas
+pueden desplazarse horizontalmente dentro de su contenedor. El login se apila
+en una columna hasta 650 px. Probar cada rol en ambos layouts con sus capturas
+U-01 a U-14; la simulación previa no sustituye pruebas físicas en Safari/iOS.
+
 ## 4. Funciones por rol
 
 ### 4.1 Administrador

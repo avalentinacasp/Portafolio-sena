@@ -32,9 +32,15 @@ solo después de verificarla.
 | T-02 `16-render-configuracion-redactada.png` | Servicio de Render y nombres de las variables configuradas. | Ocultar valores, URLs, tokens y datos de cuenta. | Pendiente |
 | T-03 `17-deploy-health-catalogo.png` | Deploy exitoso, health check y catálogo público en navegador. | HTTPS; catálogo accesible sin login; no incluir parámetros sensibles. | Pendiente |
 | T-04 `18-migracion-redactada.png` | Nombre de migración y resultado de ejecución en entorno autorizado. | No mostrar connection string, credenciales ni filas. Nunca ejecutar contra producción sin autorización. | Pendiente |
-| T-05 `19-esquema-er-migraciones.png` | Diagrama ER o visor de migraciones con tablas públicas y privadas diferenciadas. | PK/FK/relaciones legibles; preferir el diagrama documentado, no filas reales de Neon. | Pendiente |
+| T-05 `19-esquema-er-migraciones.png` | Diagrama ER o metadatos de esquema/migraciones de Neon con tablas públicas y privadas diferenciadas. | PK/FK/relaciones legibles; no mostrar connection strings, tokens ni filas reales. Preferir el diagrama documentado si no se puede redactar la consola. | Pendiente |
 | T-06 `20-build-responsive-verificacion.png` | Salida de `npm run build` y evidencia de vistas a 320, 375, 390, 1024 y 1440 px. | Registrar viewport y `scrollWidth <= clientWidth`; distinguir build de pruebas funcionales. | Pendiente |
 | T-07 `21-colab-pruebas-analisis.png` | Título, celdas relevantes y resultados del cuaderno, solo si hay acceso autorizado. | El enlace solicitó inicio de sesión durante la revisión. No usar la pantalla de login como evidencia ni ejecutar celdas que escriban en Neon sin autorización. | No verificado / acceso pendiente |
+| T-08 `22-prueba-carga-readonly.png` | Consola con las tres salidas del ejecutor local: `catalog`, `health-db` y `private-state-no-session`, oleadas 5/15/30, latencias, HTTP y errores. | Prueba local ejecutada; captura pendiente. Ocultar cookies/tokens, variables, payloads y cualquier dato sensible. No extrapolar a producción. | Ejecutado local; falta captura |
+
+La salida numérica redactada se conserva en
+[`22-prueba-carga-readonly.json`](./22-prueba-carga-readonly.json). No contiene
+cookies, tokens, connection strings, datos de respuesta ni valores de entorno.
+La imagen PNG sigue pendiente; no se generó una captura artificial.
 
 ## Procedimiento para obtener evidencia
 

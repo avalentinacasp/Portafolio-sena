@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-26",
+  "environment": "local",
+  "targetOrigin": "http://127.0.0.1:3000",
+  "database": "local disposable PostgreSQL confirmed by user",
+  "roundsPerConcurrency": 1,
+  "requestsTotal": 150,
+  "earlyStop": false,
+  "transportErrors": 0,
+  "scenarios": [
+    {
+      "name": "catalog",
+      "expectedStatus": 200,
+      "waves": [
+        { "concurrency": 5, "requests": 5, "averageMs": 1705.2, "p95Ms": 1967.9, "maxMs": 1967.9, "http": { "200": 5 } },
+        { "concurrency": 15, "requests": 15, "averageMs": 409.1, "p95Ms": 704.0, "maxMs": 704.0, "http": { "200": 15 } },
+        { "concurrency": 30, "requests": 30, "averageMs": 757.7, "p95Ms": 1348.1, "maxMs": 1403.8, "http": { "200": 30 } }
+      ],
+      "expectedStatusRatePercent": 100,
+      "http2xxRatePercent": 100,
+      "timeouts": 0,
+      "connectionErrors": 0
+    },
+    {
+      "name": "health-db",
+      "expectedStatus": 200,
+      "waves": [
+        { "concurrency": 5, "requests": 5, "averageMs": 140.7, "p95Ms": 171.3, "maxMs": 171.3, "http": { "200": 5 } },
+        { "concurrency": 15, "requests": 15, "averageMs": 238.0, "p95Ms": 361.8, "maxMs": 361.8, "http": { "200": 15 } },
+        { "concurrency": 30, "requests": 30, "averageMs": 397.5, "p95Ms": 675.3, "maxMs": 706.2, "http": { "200": 30 } }
+      ],
+      "expectedStatusRatePercent": 100,
+      "http2xxRatePercent": 100,
+      "timeouts": 0,
+      "connectionErrors": 0
+    },
+    {
+      "name": "private-state-no-session",
+      "expectedStatus": 401,
+      "waves": [
+        { "concurrency": 5, "requests": 5, "averageMs": 38.7, "p95Ms": 69.8, "maxMs": 69.8, "http": { "401": 5 } },
+        { "concurrency": 15, "requests": 15, "averageMs": 17.3, "p95Ms": 22.6, "maxMs": 22.6, "http": { "401": 15 } },
+        { "concurrency": 30, "requests": 30, "averageMs": 31.3, "p95Ms": 39.9, "maxMs": 39.9, "http": { "401": 30 } }
+      ],
+      "expectedStatusRatePercent": 100,
+      "http2xxRatePercent": 0,
+      "timeouts": 0,
+      "connectionErrors": 0
+    }
+  ],
+  "secretsIncluded": false,
+  "responseBodiesStored": false,
+  "productionTested": false,
+  "limitations": [
+    "One round per concurrency level; results are a local sample, not an SLA.",
+    "No authenticated role-state scenario was run."
+  ]
+}
