@@ -78,3 +78,9 @@ DESPLIEGUE
 Los datos históricos de base_de_datos/ se excluyen del repositorio público y no
 se sirven como contenido estático. No habilites un servidor estático con la raíz
 del proyecto.
+
+DOCUMENTACIÓN PARA REVISIÓN
+--------------------------
+Consulta docs/requisitos-actualizados.md, docs/manual-usuario.md,
+docs/manual-tecnico-operacion.md y docs/plan-de-pruebas.md. Las capturas
+pendientes y sus reglas de redacción están en docs/capturas/README.md.
