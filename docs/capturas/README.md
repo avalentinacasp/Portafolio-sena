@@ -1,37 +1,53 @@
-# Capturas requeridas para los manuales
+# Registro de capturas de evidencia
 
-**Estado:** pendientes. No se incluyen imágenes en este cambio para evitar
-presentar pantallas simuladas como evidencia real o capturar datos productivos.
+**Estado general:** todas las capturas están pendientes; este cambio no crea
+imágenes ni presenta pantallas simuladas como evidencia real. Guarde cada PNG
+final en esta carpeta con el nombre exacto de la tabla y cambie su estado aquí
+solo después de verificarla.
 
-## Inventario sugerido
+## Evidencia de usuario
 
-| Archivo | Pantalla / usuario | Uso |
-|---|---|---|
-| `01-login-y-catalogo-publico.png` | Login y catálogo sin sesión | Manual de usuario |
-| `02-panel-administrador.png` | Panel principal de administrador | Manual de usuario |
-| `03-sedes-y-sede-activa.png` | Lista/formulario de sedes | Manual de usuario |
-| `04-alta-instructor-sede.png` | Formulario con sede seleccionada | Manual de usuario |
-| `05-programa-ficha-competencia.png` | Configuración académica | Manual de usuario |
-| `06-instructor-mis-fichas-aprendiz.png` | Instructor, ficha y alta de aprendiz | Manual de usuario |
-| `07-instructor-actividad-calificacion.png` | Actividad y entrega | Manual de usuario |
-| `08-aprendiz-evidencias-recursos.png` | Evidencias y recursos | Manual de usuario |
-| `09-coordinador-auditoria.png` | Auditoría/observación | Manual de usuario |
-| `10-render-configuracion-redactada.png` | Servicio y variables con valores ocultos | Manual técnico |
-| `11-render-deploy-y-health.png` | Deploy exitoso y health check | Manual técnico |
-| `12-migracion-exitosa-redactada.png` | Resultado de migración sin URL/secretos | Manual técnico |
+| ID / archivo sugerido | Pantalla y contenido que debe verse | Qué validar antes de conservar | Estado |
+|---|---|---|---|
+| U-01 `01-login-movil-390px.png` | Login y catálogo público en 390 px; contraseña enmascarada y botón del ojo visible. | Lectura, controles táctiles y `scrollWidth <= clientWidth`; sin datos personales. | Pendiente |
+| U-02 `02-login-escritorio-1440px.png` | Login en 1440 px, dos columnas, catálogo y botón del ojo. | Layout completo, textos sin recorte y sin overflow. | Pendiente |
+| U-03 `03-login-ojo-visible-staging.png` | Botón del ojo en estado “Ocultar contraseña” y campo en tipo texto. | Solo valor dummy no productivo; no enviarlo y borrar/ocultar el valor en la imagen. | Pendiente |
+| U-04 `04-panel-administrador.png` | Inicio del administrador y accesos a Sedes, Programas, Fichas y Cuentas. | Sesión de administrador y navegación disponible. | Pendiente |
+| U-05 `05-admin-sedes.png` | Lista de sedes y acción de crear/activar; valores ficticios. | Se distinguen estados activa/inactiva. | Pendiente |
+| U-06 `06-admin-alta-instructor-sede.png` | Formulario de alta con sede activa seleccionada. | Campos y selección correctos; redactar documento/correo; no enviar para la captura. | Pendiente |
+| U-07 `07-admin-programa-ficha-competencia.png` | Programa, ficha, instructor jefe y competencia. | Relaciones coherentes, datos ficticios y legibles. | Pendiente |
+| U-08 `08-admin-cuentas-coordinador.png` | Tabla de cuentas y opciones administrativas relevantes. | Sin documentos, correos o contraseñas reales; incluir flujo de coordinador/restablecimiento si está disponible. | Pendiente |
+| U-09 `09-instructor-fichas-alta-aprendiz.png` | Mis fichas y formulario de alta de aprendiz con ficha autorizada. | Ocultar datos personales; no enviar el formulario para la captura. | Pendiente |
+| U-10 `10-instructor-actividad-entrega-calificacion.png` | Actividad, entrega y retroalimentación/calificación en staging. | Actividad asignada, nota válida y aprendiz ficticio. | Pendiente |
+| U-11 `11-instructor-riesgo-portafolio.png` | Riesgos y portafolio docente. | Datos pedagógicos ficticios; no exponer detalles reales sensibles. | Pendiente |
+| U-12 `12-aprendiz-ruta-evidencia.png` | Ruta, actividad y estado de evidencia de prueba. | Rol aprendiz, ficha propia y datos personales ocultos. | Pendiente |
+| U-13 `13-aprendiz-notas-recursos-notificaciones.png` | Notas, recursos y notificaciones. | Sesión de aprendiz con datos ficticios. | Pendiente |
+| U-14 `14-coordinador-auditoria-observacion.png` | Sedes activas, instructores y auditoría/observación. | Rol coordinador; usar personas y observaciones ficticias o redactadas. | Pendiente |
 
-Guarde las imágenes aquí, en PNG, con nombres estables. Para probar responsive,
-capture como mínimo el ancho móvil de 390 px y escritorio de 1440 px en los
-módulos principales; registre los anchos usados.
+## Evidencia técnica, base de datos y despliegue
 
-## Reglas de privacidad y autenticidad
+| ID / archivo sugerido | Pantalla y contenido que debe verse | Qué validar antes de conservar | Estado |
+|---|---|---|---|
+| T-01 `15-estructura-proyecto.png` | Árbol del proyecto con `server/`, `migrations/`, `scripts/`, `docs/` y archivos principales. | No expandir ni mostrar `.env.local`, `.neon`, `node_modules/` ni datos históricos. | Pendiente |
+| T-02 `16-render-configuracion-redactada.png` | Servicio de Render y nombres de las variables configuradas. | Ocultar valores, URLs, tokens y datos de cuenta. | Pendiente |
+| T-03 `17-deploy-health-catalogo.png` | Deploy exitoso, health check y catálogo público en navegador. | HTTPS; catálogo accesible sin login; no incluir parámetros sensibles. | Pendiente |
+| T-04 `18-migracion-redactada.png` | Nombre de migración y resultado de ejecución en entorno autorizado. | No mostrar connection string, credenciales ni filas. Nunca ejecutar contra producción sin autorización. | Pendiente |
+| T-05 `19-esquema-er-migraciones.png` | Diagrama ER o visor de migraciones con tablas públicas y privadas diferenciadas. | PK/FK/relaciones legibles; preferir el diagrama documentado, no filas reales de Neon. | Pendiente |
+| T-06 `20-build-responsive-verificacion.png` | Salida de `npm run build` y evidencia de vistas a 320, 375, 390, 1024 y 1440 px. | Registrar viewport y `scrollWidth <= clientWidth`; distinguir build de pruebas funcionales. | Pendiente |
+| T-07 `21-colab-pruebas-analisis.png` | Título, celdas relevantes y resultados del cuaderno, solo si hay acceso autorizado. | El enlace solicitó inicio de sesión durante la revisión. No usar la pantalla de login como evidencia ni ejecutar celdas que escriban en Neon sin autorización. | No verificado / acceso pendiente |
 
-- Capturar desde una versión actual servida por Express, no desde un mock sin
-  rotularlo.
-- Usar cuentas autorizadas de prueba y datos ficticios. Si solo existe base de
-  producción, no crear registros para obtener capturas.
-- Ocultar documento, correo, nombres personales, cookies, tokens, URLs con
-  parámetros sensibles y valores de variables de entorno.
-- Para capturas de Render, mostrar nombres de variables, nunca sus valores.
-- No incluir logs que contengan URLs completas de base de datos.
-- No recortar mensajes de error importantes; anotar el navegador y ancho.
+## Procedimiento para obtener evidencia
+
+1. Utilice un entorno de staging y cuentas autorizadas con datos ficticios. Si
+   solo existe la base productiva, no cree registros para obtener capturas.
+2. Capture desde una versión actual servida por Express. Registre navegador,
+   sistema operativo, rol y ancho de viewport cuando sea relevante.
+3. Tome PNG sin recortar errores importantes. Redacte datos personales,
+   credenciales, cookies, tokens, valores de variables y URLs sensibles.
+4. Para U-03 use únicamente un valor dummy no productivo; no lo envíe al
+   servidor y elimínelo de la captura guardada.
+5. Si una captura no se puede obtener de forma segura, déjela como pendiente y
+   anote el bloqueo; no la reemplace con una imagen inventada o un mock sin
+   identificar.
+6. Después de guardar cada imagen, confirme su legibilidad y actualice el
+   estado de su fila. No se incluyen imágenes con este registro.

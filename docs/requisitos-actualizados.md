@@ -90,8 +90,10 @@ disponibilidad/SLA del hosting.
    `npm run build` comprueba sintaxis únicamente. La matriz pendiente está en
    [Plan de pruebas](./plan-de-pruebas.md).
 4. **Capturas:** aún no hay imágenes de evidencia; ver
-   [capturas requeridas](./capturas/README.md). Deben tomarse con cuentas
-   autorizadas y datos ficticios/no sensibles.
+   [registro de capturas](./capturas/README.md), con nombre propuesto,
+   contenido requerido y validación por cada pantalla. Deben tomarse con
+   cuentas autorizadas y datos ficticios/no sensibles; no marcar criterios
+   como verificados solo por tener un espacio reservado.
 5. **Fuentes de referencia:** el cuaderno Colab no fue accesible sin cuenta; el
    contenido de los PDF se debe revisar manualmente durante la validación
    institucional.
@@ -110,3 +112,13 @@ disponibilidad/SLA del hosting.
 - [ ] Se completa la decisión del catálogo público descrita en el apartado 5.
 - [ ] Se reemplazan los espacios de captura por imágenes reales sin secretos ni
   información personal.
+
+### Evidencias visuales asociadas
+
+- Login público y contraseña: U-01 a U-03.
+- Administración de sedes, instructores, programas, fichas y cuentas: U-04 a
+  U-08.
+- Flujos de instructor, aprendiz y coordinador: U-09 a U-14.
+- Estructura, despliegue, migraciones, esquema y pruebas: T-01 a T-06.
+- Cuaderno de Colab: T-07 es condicional al acceso autorizado; su contenido no
+  está verificado en esta revisión.

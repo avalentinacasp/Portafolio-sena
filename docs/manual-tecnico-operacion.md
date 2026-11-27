@@ -1,6 +1,6 @@
 # Manual técnico, instalación y operación
 
-**Versión:** 1.0 · **Fecha:** 26 de noviembre de 2026  
+**Versión:** 1.0 · **Fecha:** 26 de noviembre de 2026
 **Estado:** documentación técnica basada en el repositorio; falta anexar
 capturas reales de despliegue.
 
@@ -26,6 +26,13 @@ Navegador
 | `migrations/` | Esquemas SQL versionados: catálogo público y portafolio privado. |
 | `scripts/` | Comprobación de conexión, migración y creación única del administrador. |
 | `base_de_datos/` | Datos/esquema históricos; ignorados por Git y no servidos por Express. No son seeds del despliegue. |
+
+> **CAPTURA T-01 — PENDIENTE**
+> Archivo: `docs/capturas/15-estructura-proyecto.png`
+> Debe verse: árbol de carpetas `server/`, `migrations/`, `scripts/` y `docs/`,
+> además de los archivos principales.
+> Validar: no expandir ni mostrar `.env.local`, `.neon`, `node_modules/` ni
+> contenidos de datos históricos.
 
 ## 2. Requisitos de instalación
 
@@ -78,13 +85,13 @@ npm run db:create-admin
 npm start
 ```
 
-`npm run db:check` ejecuta `SELECT version()` con `DATABASE_URL`.  
+`npm run db:check` ejecuta `SELECT version()` con `DATABASE_URL`.
 `npm run db:migrate` requiere `DATABASE_URL_UNPOOLED`, crea `schema_migrations`
-y aplica los SQL numerados no registrados, en orden y transacción.  
+y aplica los SQL numerados no registrados, en orden y transacción.
 `npm run db:create-admin` inserta solo si todavía no existe administrador,
 requiere las cuatro variables `BOOTSTRAP_ADMIN_*` y usa conexión directa. El
-script no se ejecutó durante esta auditoría.  
-`npm start` carga `.env`, luego `.env.local` si existe y arranca Express.  
+script no se ejecutó durante esta auditoría.
+`npm start` carga `.env`, luego `.env.local` si existe y arranca Express.
 `npm run build` ejecuta `node --check` en servidor, scripts y frontend; no
 compila/bundlea ni ejecuta pruebas funcionales.
 
@@ -113,6 +120,22 @@ dependen del plan vigente de Render/Neon; el repositorio no garantiza servicio
 
 **Capturas pendientes:** build/deploy, variables redactadas, migración aplicada
 sin mostrar URLs, servicio saludable y catálogo público.
+
+> **CAPTURA T-02 — PENDIENTE**
+> Archivo: `docs/capturas/16-render-configuracion-redactada.png`
+> Debe verse: servicio Render y nombres de variables requeridas.
+> Validar: ocultar todos los valores, URL de base de datos, tokens y datos de
+> cuenta.
+
+> **CAPTURA T-03 — PENDIENTE**
+> Archivo: `docs/capturas/17-deploy-health-catalogo.png`
+> Debe verse: deploy terminado, health check y catálogo público en navegador.
+> Validar: mismos orígenes recomendados, HTTPS y catálogo sin login.
+
+> **CAPTURA T-04 — PENDIENTE**
+> Archivo: `docs/capturas/18-migracion-redactada.png`
+> Debe verse: nombre de la migración aplicada y resultado correcto.
+> Validar: no mostrar connection string, credenciales ni datos de filas.
 
 ## 6. API y seguridad operativa
 
@@ -172,6 +195,12 @@ una tabla de perfil independiente. `schema_migrations` contiene el nombre de
 archivo y fecha de aplicación. El catálogo público y los datos privados no
 tienen relación FK entre sí.
 
+> **CAPTURA T-05 — PENDIENTE**
+> Archivo: `docs/capturas/19-esquema-er-migraciones.png`
+> Debe verse: diagrama ER de esta sección o visor de las migraciones, con
+> entidades públicas y privadas diferenciadas.
+> Validar: mostrar PK/FK/relaciones sin conectarse a producción ni mostrar filas.
+
 ### 7.2 Diccionario resumido
 
 | Tabla | Campos principales / reglas | Relaciones |
@@ -213,7 +242,21 @@ tienen relación FK entre sí.
 
 ## 9. Capturas y datos para operación
 
-No se anexan capturas en esta versión. Consulte
-[docs/capturas/README.md](./capturas/README.md) para el inventario, nombres y
-reglas de redacción. No fotografiar secretos, documentos, correos reales, URL
-con credenciales ni datos de producción.
+> **CAPTURA T-06 — PENDIENTE**
+> Archivo: `docs/capturas/20-build-responsive-verificacion.png`
+> Debe verse: salida satisfactoria de `npm run build` y matriz/inspector de
+> viewport con 320, 375, 390, 1024 y 1440 px.
+> Validar: conservar la salida completa y métrica `scrollWidth <= clientWidth`;
+> no afirmar que el build sustituye pruebas funcionales.
+
+> **CAPTURA T-07 — OPCIONAL / ACCESO PENDIENTE**
+> Archivo sugerido: `docs/capturas/21-colab-pruebas-analisis.png`
+> Referencia: [cuaderno de Colab](https://colab.research.google.com/drive/1MIwKuE0BwBDQ6LMkV98RqwA8YIjLbZ2S).
+> Debe verse: título del notebook, celdas relevantes de pruebas/análisis y
+> resultados, solo si el propietario concede acceso.
+> Validar: no capturar pantalla de login como si fuera evidencia del contenido;
+> no ejecutar celdas que escriban en Neon sin autorización.
+
+El inventario completo está en [docs/capturas/README.md](./capturas/README.md).
+No fotografiar secretos, documentos, correos reales, URLs con credenciales ni
+datos de producción. Las imágenes aún no están anexadas.
