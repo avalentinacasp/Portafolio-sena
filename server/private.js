@@ -689,6 +689,9 @@ function mountPrivateRoutes(app, allowedOrigins) {
   app.post("/api/private/instructors", requireRole("administrador"), transactionRoute(async (request, response, client) => {
     const { name, document, email, type, siteId, password } = request.body;
     if (!["De planta", "Técnico", "Transversal"].includes(type)) throw httpError(400, "Tipo de vinculación inválido.");
+    if (typeof siteId !== "string" || !siteId.trim()) throw httpError(400, "Selecciona una sede activa para el instructor.");
+    const site = await client.query("SELECT id FROM sedes WHERE id = $1 AND activa = TRUE", [siteId]);
+    if (!site.rowCount) throw httpError(400, "La sede seleccionada no existe o está inactiva.");
     const instructorId = id();
     await client.query(
       "INSERT INTO instructores (id, nombre, documento, vinculacion, sede_id, correo) VALUES ($1, $2, $3, $4, $5, $6)",

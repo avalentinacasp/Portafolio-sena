@@ -37,6 +37,11 @@ elimínalas del entorno. El administrador puede crear cuentas de instructor y
 coordinador; el instructor puede crear cuentas de aprendiz. No se crean claves
 temporales conocidas ni se importan las contraseñas del prototipo.
 
+Para registrar un instructor debe existir al menos una sede activa. Crea o
+activa la sede desde la sección Sedes y luego vuelve a Cuentas e instructores.
+No hay un script de terminal para crear cuentas de prueba: usa los formularios
+autenticados para conservar las validaciones y permisos del sistema.
+
 Los usuarios pueden cambiar su contraseña autenticándose. Un administrador
 puede restablecer las contraseñas de las cuentas. No hay envío de correo ni
 recuperación automática por email configurados.
@@ -65,8 +70,10 @@ DESPLIEGUE
 4. Usa `npm start` como comando de arranque.
 5. Crea la cuenta inicial con `npm run db:create-admin` una sola vez y elimina
    sus cuatro variables BOOTSTRAP_ADMIN_* del entorno.
-6. Abre la URL HTTPS del servicio y crea sedes, programas, fichas, instructores
-   y competencias antes de registrar aprendices y publicar actividades.
+6. En la aplicación, crea una sede activa y después un instructor asociado.
+7. Crea un programa para la sede, una ficha con ese programa y el instructor
+   jefe, y luego las competencias asignadas al instructor. El instructor puede
+   iniciar sesión y añadir aprendices a sus fichas desde la sección Mis fichas.
 
 Los datos históricos de base_de_datos/ se excluyen del repositorio público y no
 se sirven como contenido estático. No habilites un servidor estático con la raíz

@@ -217,7 +217,11 @@ function adminView() {
       ]));
   }
   if (activeView === "usuarios") {
+    const hasActiveSites = state.sites.some((site) => site.active);
     return heading("Cuentas e instructores", "Crea cuentas con contraseñas iniciales definidas por el administrador.", button("＋ Nuevo instructor", 'data-form="instructor"', "gold") + " " + button("＋ Nuevo coordinador", 'data-form="coordinator"', "out")) +
+      (!hasActiveSites
+        ? '<div class="notice" role="status">Para crear instructores, primero crea o activa una sede. <button type="button" class="btn xs out" data-view="sedes">Ir a sedes</button></div>'
+        : "") +
       table(["Nombre", "Documento", "Rol", "Correo", "Acciones"], state.users.map((account) => [
         esc(account.name), esc(account.doc), badge(roles[account.role]), esc(account.email),
         button("Restablecer contraseña", `data-reset="${esc(account.doc)}"`),
@@ -280,7 +284,10 @@ function showPrivate(userInfo) {
 
 function field(name, label, type = "text", options = [], value = "") {
   if (type === "select") {
-    return `<div class="field"><label for="f-${esc(name)}">${esc(label)}</label><select id="f-${esc(name)}" name="${esc(name)}" required>${options.map(([key, text]) => `<option value="${esc(key)}" ${String(key) === String(value) ? "selected" : ""}>${esc(text)}</option>`).join("")}</select></div>`;
+    const optionMarkup = options.length
+      ? options.map(([key, text]) => `<option value="${esc(key)}" ${String(key) === String(value) ? "selected" : ""}>${esc(text)}</option>`).join("")
+      : '<option value="" selected disabled>No hay opciones disponibles</option>';
+    return `<div class="field"><label for="f-${esc(name)}">${esc(label)}</label><select id="f-${esc(name)}" name="${esc(name)}" required>${optionMarkup}</select></div>`;
   }
   if (type === "textarea") {
     return `<div class="field"><label for="f-${esc(name)}">${esc(label)}</label><textarea id="f-${esc(name)}" name="${esc(name)}" rows="4" required>${esc(value)}</textarea></div>`;
@@ -295,6 +302,11 @@ function selectOptions(items, getValue, getLabel) {
 function openForm(kind, editing = null) {
   const ownCompetencies = state.comps.filter((comp) => user.role !== "instructor" || comp.instId === user.ref);
   const ownFichas = state.fichas.filter((ficha) => user.role !== "instructor" || ficha.jefeId === user.ref || ownCompetencies.some((comp) => comp.programId === ficha.programId));
+  const activeSites = state.sites.filter((site) => site.active);
+  if (kind === "instructor" && activeSites.length === 0) {
+    $("modal").innerHTML = `<div class="mb"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="instructorSiteRequired"><h3 id="instructorSiteRequired">No hay sedes activas</h3><p>Activa una sede existente o crea una nueva antes de registrar un instructor.</p><div class="foot"><button type="button" class="btn out" data-close>Cancelar</button><button type="button" class="btn gold" data-action="manage-sites">Ir a sedes</button></div></section></div>`;
+    return;
+  }
   const forms = {
     note: ["Nueva nota", [["title", "Título", "text"], ["body", "Contenido", "textarea"]]],
     task: ["Nueva actividad", [
@@ -331,7 +343,7 @@ function openForm(kind, editing = null) {
       ["name", "Nombre completo", "text"], ["document", "Documento", "text"],
       ["email", "Correo", "email"], ["password", "Contraseña inicial (mín. 10 caracteres)", "password"],
       ["type", "Vinculación", "select", ["De planta", "Técnico", "Transversal"].map((item) => [item, item])],
-      ["siteId", "Sede", "select", selectOptions(state.sites, (item) => item.id, (item) => item.name)],
+      ["siteId", "Sede", "select", selectOptions(activeSites, (item) => item.id, (item) => item.name)],
     ]],
     coordinator: ["Nuevo coordinador", [
       ["name", "Nombre completo", "text"], ["document", "Documento", "text"],
@@ -484,6 +496,11 @@ document.addEventListener("click", async (event) => {
     } else if (target.dataset.action === "change-password") {
       closeMobileNav();
       $("changePassword").click();
+    } else if (target.dataset.action === "manage-sites") {
+      $("modal").innerHTML = "";
+      activeView = "sedes";
+      render();
+      closeMobileNav();
     } else if (target.dataset.form) {
       openForm(target.dataset.form);
     } else if (target.dataset.edit) {
